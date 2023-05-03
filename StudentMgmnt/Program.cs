@@ -1,17 +1,39 @@
+using System;
+using System.IO;
+using System.Windows.Forms;
+
 namespace StudentMgmnt
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+
+
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "CSV-Dateien (*.csv)|*.csv"
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var dateiPfad = openFileDialog.FileName;
+                    StudentControl.LadeSchuelerListeAusCsv(dateiPfad);
+                    StudentControl.GeneriereEmailAdressen();
+
+                    var form = new FormMain();
+                    form.KurzstatistikText = StudentControl.ZeigeKurzstatistik();
+                    Application.Run(form);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Beim Laden der CSV-Datei ist ein Fehler aufgetreten:{Environment.NewLine}{ex.Message}");
+                }
+            }
         }
     }
 }
