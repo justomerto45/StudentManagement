@@ -1,24 +1,46 @@
-﻿using StudentManagement.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Schuelerliste;
+using StudentManagement.Data;
 
-internal class Program
+namespace SchuelerListe
 {
-    static void Main(string[] args)
+    public partial class Program
     {
-        string csvFilePath = "C:\\Users\\Can Mert\\Downloads\\SchuelerListe.CSV";
-        List<Student> schuelerList = CsvReader.ReadCSV(csvFilePath);
-
-        StudentControl.GenerateEmailAddresses(schuelerList);
-
-        foreach (Student student in schuelerList)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine($"Name: {student.FirstName} {student.LastName}");
-            Console.WriteLine($"Klasse: {student.SchoolClass}");
-            Console.WriteLine($"Email: {student.Email}");
-            Console.WriteLine();
+            string csvPath = "C:\\Users\\Can Mert\\Downloads\\SchuelerListe.CSV";
+            List<Student> studentList = await CsvReader.ReadCSV<Student>(csvPath);
+
+            // email adressen für students generieren
+            foreach (var students in studentList)
+            {
+                students.Email = $"{students.FirstName.ToLower()}.{students.LastName.ToLower()}@tfbseke.at";
+            }
+
+            // studentlist als xml file speichern
+            string xmlPath = "C:\\Users\\Can Mert\\Downloads\\schueler.xml";
+            await ReadingXML.SaveXMLAsync(studentList, xmlPath);
+
+            // studentlist als json file speichern
+            string jsonPath = "C:\\Users\\Can Mert\\Downloads\\schueler.json";
+            await ReadingJson.SaveJsonAsync(studentList, jsonPath);
+
+            // ausgabe der studentlist in der konsole
+            foreach (var students in studentList)
+            {
+                Console.WriteLine($"{students.FirstName} {students.LastName} ({students.SchoolClass}) - {students.Email}\n");
+            }
+
+            // statistik anzeigen
+            StudentControl.StatisticHelper(studentList);
+
+            Console.ReadLine();
         }
-
-        StudentControl.DisplayStatistics(schuelerList);
-
-        Console.ReadLine();
     }
 }

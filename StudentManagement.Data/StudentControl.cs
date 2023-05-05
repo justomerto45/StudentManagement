@@ -14,22 +14,28 @@ public static class StudentControl
         }
     }
 
-    public static void DisplayStatistics(List<Student> studentList)
+    public static void StatisticHelper(List<Student> studentList)
     {
-        int studentCount = studentList.Count;
-        int schoolclassCount = studentList.Select(s => s.SchoolClass).Distinct().Count();
+        int countStudent = studentList.Count;
+        int countSchoolClasses = studentList.Select(s => s.SchoolClass).Distinct().Count();
+        double avrgStudentsInClass = (double)studentList.Count / countSchoolClasses;
 
-        if (schoolclassCount == 0)
+        Console.WriteLine("Anzahl der Schueler: " + countStudent);
+        Console.WriteLine("Anzahl der Klassen: " + countSchoolClasses);
+        Console.WriteLine("Durchschnittliche Anzahl Schueler pro Klasse: " + avrgStudentsInClass);
+
+        var schuelerProKlasse = studentList.GroupBy(s => s.SchoolClass)
+                                            .Select(g => new
+                                            {
+                                                SchoolClass = g.Key,
+                                                StudentCount = g.Count()
+                                            });
+
+        Console.WriteLine("Anzahl der Schueler pro Klasse:");
+        foreach (var item in schuelerProKlasse)
         {
-            Console.WriteLine("No school classes found.");
-            return;
+            Console.WriteLine("Klasse " + item.SchoolClass + ": " + item.StudentCount + " Schueler");
         }
-
-        int averageStudentPerClass = studentCount / schoolclassCount;
-
-        Console.WriteLine($"Anzahl Schüler: {studentCount}");
-        Console.WriteLine($"Anzahl Klassen: {schoolclassCount}");
-        Console.WriteLine($"Durchschnitt Schüler pro Klasse: {averageStudentPerClass}");
     }
 
 }
