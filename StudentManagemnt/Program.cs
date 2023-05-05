@@ -25,11 +25,32 @@ namespace SchuelerListe
 
             // studentlist als xml file speichern
             string xmlPath = "C:\\Users\\Can Mert\\Downloads\\schueler.xml";
-            await ReadingXML.SaveXMLAsync(studentList, xmlPath);
+            await SaveFileWithIncrementedNameAsync(xmlPath, studentList, ReadingXML.SaveXMLAsync);
 
             // studentlist als json file speichern
             string jsonPath = "C:\\Users\\Can Mert\\Downloads\\schueler.json";
-            await ReadingJson.SaveJsonAsync(studentList, jsonPath);
+            await SaveFileWithIncrementedNameAsync(jsonPath, studentList, ReadingJson.SaveJsonAsync);
+
+
+            async Task SaveFileWithIncrementedNameAsync<T>(string filePath, T data, Func<T, string, Task> saveMethod)
+            {
+                if (File.Exists(filePath))
+                {
+                    int i = 1;
+                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+                    string fileExtension = Path.GetExtension(filePath);
+                    string newFilePath;
+                    do
+                    {
+                        newFilePath = Path.Combine(Path.GetDirectoryName(filePath), $"{fileNameWithoutExtension}{i}{fileExtension}");
+                        i++;
+                    } while (File.Exists(newFilePath));
+                    filePath = newFilePath;
+                }
+
+                await saveMethod(data, filePath);
+            }
+
 
             // ausgabe der studentlist in der konsole
             foreach (var students in studentList)
