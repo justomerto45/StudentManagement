@@ -1,4 +1,4 @@
-﻿using StudentManagement.Data;
+﻿using StudentManagement.Data.Student;
 
 public static class StudentControl
 {

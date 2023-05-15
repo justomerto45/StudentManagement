@@ -1,11 +1,10 @@
 ﻿using StudentManagement.Data;
+using StudentManagement.Data.Student;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Schuelerliste
-{
     public static class CsvReader
     {
         public static async Task<List<T>> ReadCSV<T>(string filePath) where T : Student, new()
@@ -50,4 +49,3 @@ namespace Schuelerliste
         }
 
     }
-}

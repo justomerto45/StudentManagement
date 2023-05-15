@@ -1,4 +1,4 @@
-﻿namespace StudentManagement.Data
+﻿namespace StudentManagement.Data.Student
 {
     public class Student
     {
