@@ -14,7 +14,7 @@ To get started with the student management system, follow these steps:
 1. Clone the repository:
 
    ```shell
-   git clone https://github.com/your-username/student-management-system.git
+   git clone https://github.com/your-username/StudentManagement.git
    ```
 
 2. Open the project in your favorite IDE or text editor.
