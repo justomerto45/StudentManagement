@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using StudentManagement.Data;
+﻿using Newtonsoft.Json;
 public static class ReadingJson
 {
     public static async Task SaveJsonAsync<T>(List<T> liste, string jsonPath)

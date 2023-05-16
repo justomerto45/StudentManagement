@@ -4,6 +4,7 @@ public static class StudentControl
 {
     public static void GenerateEmailAddresses(List<Student> studentList)
     {
+        // für jeden schüler wird durch einen einfachen string eine email generiert
         foreach (Student schueler in studentList)
         {
             string firstname = schueler.FirstName.ToLower();
@@ -16,6 +17,7 @@ public static class StudentControl
 
     public static void StatisticHelper(List<Student> studentList)
     {
+        // statistik durch einfache linq queries
         int countStudent = studentList.Count;
         int countSchoolClasses = studentList.Select(s => s.SchoolClass).Distinct().Count();
         double avrgStudentsInClass = (double)studentList.Count / countSchoolClasses;
